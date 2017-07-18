@@ -1,0 +1,73 @@
+import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+
+/**
+ * Created by XiaoMaYi on 2017/7/18.
+ */
+
+public class SuperPopupWindow extends PopupWindow {
+
+    public static class SHOW_TYPE {
+        public static final String NORMAL = "normal";//正常
+        public static final String ON_THE_STATUS_BAR = "On the status bar";//侵占状态栏
+    }
+
+    public String showType = "";
+    private Activity activity = null;
+
+    public SuperPopupWindow(Context context) {
+        super(context);
+    }
+
+    public SuperPopupWindow(Context context, AttributeSet attrs) {
+        super(context,attrs);
+    }
+
+    public SuperPopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public SuperPopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context,attrs,defStyleAttr,defStyleRes);
+    }
+
+    public SuperPopupWindow() {
+        super();
+    }
+
+    public SuperPopupWindow(View contentView) {
+        super(contentView);
+    }
+
+    public SuperPopupWindow(int width, int height) {
+        super(width, height);
+    }
+
+    public SuperPopupWindow(View contentView, int width, int height) {
+        super(contentView, width, height);
+    }
+
+    public SuperPopupWindow(View contentView, int width, int height, boolean focusable) {
+        super(contentView,width,height,focusable);
+    }
+
+    public void setShowType(Activity activity,String showType){
+        this.showType = showType;
+        this.activity = activity;
+        if (showType.equals(SHOW_TYPE.ON_THE_STATUS_BAR)&&activity!=null) {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        if (showType.equals(SHOW_TYPE.ON_THE_STATUS_BAR)&&activity!=null) {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        super.dismiss();
+    }
+}
